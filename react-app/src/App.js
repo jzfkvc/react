@@ -15,27 +15,39 @@ const client = new ApolloClient({
   },
   cache: new InMemoryCache(),
 });
+const GET_CUSTOMER = gql`
+  query getCustomer {
+    customers {
+      id
+      name
+      birthDate
+      vip
+      spendedMoney
+    }
+  }
+`;
+
+function Customers() {
+  const { loading, error, data } = useQuery(GET_CUSTOMER);
+
+  if (loading) return <p>Loading...</p>;
+  if (error) return <p>Error :(</p>;
+
+  return data.customers.map((customer) => (
+    <div key={customer.id}>
+      <p>
+        {customer.id} | {customer.name} | {customer.birthDate} |{" "}
+        {customer.vip ? <>vip</> : <></>} | {customer.spendedMoney}
+      </p>
+    </div>
+  ));
+}
 
 function App() {
-  return (
-    <div className="App">
-      {client
-        .query({
-          query: gql`
-            query MyQuery {
-              customers {
-                id
-                name
-                birthDate
-                vip
-                spendedMoney
-              }
-            }
-          `,
-        })
-        .then((result) => console.log(result))}
-    </div>
-  );
+  return <ApolloProvider client={client}>
+    <h1>My first react app</h1>
+    <Customers />
+  </ApolloProvider>;
 }
 
 export default App;
