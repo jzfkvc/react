@@ -1,5 +1,6 @@
-import { Box, DataTable } from "grommet";
+import { Box, DataTable, TableRow } from "grommet";
 import { useQuery, gql } from "@apollo/client";
+import Screen from "./ScreenSwitch";
 
 const GET_CUSTOMER = gql`
   query getCustomer {
@@ -17,7 +18,7 @@ function Customers() {
   const { loading, error, data } = useQuery(GET_CUSTOMER);
 
   if (loading) return <p>Loading...</p>;
-  if (error) return <p>Error :(</p>;
+  if (error) return <p>Error :( {console.log(error.message)}</p>;
 
   return (
     <div>
