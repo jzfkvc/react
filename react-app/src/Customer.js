@@ -1,6 +1,5 @@
-import { Box, DataTable, TableRow } from "grommet";
+import { Box, DataTable } from "grommet";
 import { useQuery, gql } from "@apollo/client";
-import Screen from "./ScreenSwitch";
 
 const GET_CUSTOMER = gql`
   query getCustomer {
@@ -14,7 +13,7 @@ const GET_CUSTOMER = gql`
   }
 `;
 
-function Customers() {
+function Customers(props) {
   const { loading, error, data } = useQuery(GET_CUSTOMER);
 
   if (loading) return <p>Loading...</p>;
@@ -41,7 +40,9 @@ function Customers() {
           ]}
           data={data.customers}
           fill="horizontal"
-          onClickRow={() => {}}
+          onClickRow={({ datum }) => {
+            props.onClickHandler(datum.id);
+          }}
         />
       </Box>
     </div>

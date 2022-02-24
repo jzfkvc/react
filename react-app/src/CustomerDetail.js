@@ -2,27 +2,33 @@ import { Box, DataTable, Button, Header } from "grommet";
 import { useQuery, gql } from "@apollo/client";
 
 const GET_ORDER = gql`
-  query MyQuery ($customer : Int){
+  query MyQuery($customer: Int) {
     orders(where: { customerId: { _eq: $customer } }) {
       id
       date
       numberOfProducts
-      customer {
-        id
-        name
-        birthDate
-        vip
-        spendedMoney
-      }
+    }
+    customers(where: { id: { _eq: $customer } }) {
+      id
+      name
+      birthDate
+      vip
+      spendedMoney
     }
   }
 `;
 
-function CustomerDetail(customer) {
-  const { loading, error, data } = useQuery(GET_ORDER, {variables: customer});
+function CustomerDetail(props) {
+  const customer = props.customer;
+  const onClickHandler = () => {
+    props.onClickHandler(0);
+  };
+  const { loading, error, data } = useQuery(GET_ORDER, {
+    variables: { customer },
+  });
 
   if (loading) return <p>Loading...</p>;
-  if (error) return <p>Error :(  {console.log(error.message)}</p>;
+  if (error) return <p>Error :( {console.log(error.message)}</p>;
 
   return (
     <div>
@@ -43,11 +49,10 @@ function CustomerDetail(customer) {
               { property: "vip", header: "Vip" },
               { property: "spendedMoney", header: "SpendedMoney" },
             ]}
-            data={[]}
+            data={data.customers}
             fill="horizontal"
-            onClickRow={() => {}}
           />
-          <Button label="Back" onClick={() => {}} />
+          <Button label="Back" onClick={onClickHandler} />
         </Header>
         <DataTable
           columns={[
