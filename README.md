@@ -1,3 +1,5 @@
+Povodne zadanie projektu:
+
 Naprogramuj prosim jednoduchu aplikaciu kde bude:
 1. Zoznam zakaznikov (id, meno, datum narodenia, ci je vip, celkova suma objednavok), prelink napr kliknutim na idcko na detail
 2. Detail zakaznika (id, meno, datum narodenia ci je vip) a zoznam jeho objednavok (id, datum objednania, suma, pocet produktov)
